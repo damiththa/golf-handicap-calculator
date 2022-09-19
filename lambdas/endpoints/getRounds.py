@@ -22,7 +22,33 @@ def handler(event, context):
     }
 
     # doing GET
-    res = requests.get(url, headers=headers)
-    # print (res.status_code)
-    # print (res.content)
+    resp = requests.get(url, headers=headers)
+    # print (resp.status_code)
+    # print (resp.content)
+
+    # FIXME: This brings entries per page (less than 100), need to consider and put in a fix to accomodate pagination
     
+    # Into a python array in HandicapDefferential in desc. order 
+    entries = resp.json() # making resp. python friendly
+    # print (entries)
+
+    entries_list = [] # list to hold entries the way I want them 
+
+    for i in entries.keys():
+        for j in entries[i]:
+            num = 0 # counter
+            thisEntry = {
+                "rID": num,
+                "entryDate": j['fields']['Date'],
+                "HandicapDifferential": round(j['fields']['HandicapDifferential'], 4)
+            }
+            # print (thisEntry)
+
+            entries_list.append(thisEntry) # into the list
+
+            num+=1 # incrementing counter
+    
+    # print (entries_list)
+
+    sorted_entries_list = sorted(entries_list, key=lambda item: item.get("HandicapDifferential"))
+    # print (sorted_entries_list)
