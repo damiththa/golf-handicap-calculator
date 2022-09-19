@@ -2,3 +2,5 @@
 secrets.env.yml
 
 __pycache__/
+
+.serverless/
