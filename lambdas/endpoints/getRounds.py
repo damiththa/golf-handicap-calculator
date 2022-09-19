@@ -14,8 +14,8 @@ def handler(event, context):
     # print ('We here')
 
     # Getting upcoming market holidays
-    url = getConfigs.airTable_baseURI + AIRTABLE_BASE_KEY + '/' + TBL_ROUNDS + '/'
-    # print (url)
+    url = getConfigs.airTable_baseURI + AIRTABLE_BASE_KEY + '/' + TBL_ROUNDS + '?' + getConfigs.airTable_urlFilter2
+    print (url)
     headers = {
         'Authorization': AIRTABLE_API_KEY,
         'Content-Type' : 'application/json'
@@ -24,4 +24,5 @@ def handler(event, context):
     # doing GET
     res = requests.get(url, headers=headers)
     # print (res.status_code)
-    print (res.content)
+    # print (res.content)
+    
