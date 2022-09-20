@@ -15,7 +15,7 @@ def handler(event, context):
 
     # Getting upcoming market holidays
     url = getConfigs.airTable_baseURI + AIRTABLE_BASE_KEY + '/' + TBL_ROUNDS + '?' + getConfigs.airTable_urlFilter2
-    print (url)
+    # print (url)
     headers = {
         'Authorization': AIRTABLE_API_KEY,
         'Content-Type' : 'application/json'
@@ -47,4 +47,6 @@ def handler(event, context):
     # print (entries_list)
 
     sorted_entries_list = sorted(entries_list, key=lambda item: item.get("HandicapDifferential"))
-    print (sorted_entries_list)
+    # print (sorted_entries_list)
+
+    return sorted_entries_list
