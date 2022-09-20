@@ -38,7 +38,7 @@ def handler(event, context):
         for j in entries[i]:
             thisEntry = {
                 "entryDate": j['fields']['Date'],
-                "HandicapDifferential": j['fields']['HandicapDifferential']
+                "HandicapDifferential": round(j['fields']['HandicapDifferential'], 4)
             }
             # print (thisEntry)
 

@@ -12,37 +12,9 @@ TBL_HANDICAPDIFFERENTIAL = os.environ['TBL_HANDICAPDIFFERENTIAL']
 def handler(event, context):
 
     # print ('we are in a lambda, triggered by step functions- woohoo')
-    
-    # event = json.dumps(event) # getting the object returned in json 
-    # print (event)
 
-    # ---- This for DEV only, should be deleted afterwards --- START
-    event = {
-        "Input": [
-                {
-                    "entryDate": "2014-08-09",
-                    "HandicapDifferential": 18.9492
-                },
-                {
-                    "entryDate": "2020-07-06",
-                    "HandicapDifferential": 20.2349
-                },
-                {
-                    "entryDate": "2016-05-20",
-                    "HandicapDifferential": 22.9767
-                },
-                {
-                    "entryDate": "2013-05-11",
-                    "HandicapDifferential": 23.8939
-                },
-                {
-                    "entryDate": "2022-07-24",
-                    "HandicapDifferential": 24.1008
-                }
-            ]
-        }
     # print (event)
-    # ---- This for DEV only, should be deleted afterwards --- END
+    # NOTEME: This is already sorted by the lowest HandicapDefferential to highest
 
     # Checking No. of Rounds returned
     roundsEntered = len(event['Input'])
@@ -81,19 +53,35 @@ def handler(event, context):
     # print (handicapDifferential_dict_keys)
     #Ex --> [12, 17, 14, 4, 18, 16, 8, 6, 10, 19, 20]
 
-    lowest_num_rounds = min([i for i in handicapDifferential_dict_keys if roundsEntered <= i]) 
-    # See more --> https://stackoverflow.com/a/36275519/789782
-    # print (lowest_num_rounds)
+    # checking no. if entered rounds is more than number of rounds needed for lowest handicap differential
+    if roundsEntered <= max(handicapDifferential_dict_keys):
+        lowest_num_rounds = min([i for i in handicapDifferential_dict_keys if roundsEntered <= i]) 
+        # See more --> https://stackoverflow.com/a/36275519/789782
+        # print (lowest_num_rounds)
+    else:
+        lowest_num_rounds = max(handicapDifferential_dict_keys) # this is 20
 
-    diff_to_use = handicapDifferential_dict[str(lowest_num_rounds)] # lowest handicap differential to use
+    diff_to_use = int(handicapDifferential_dict[str(lowest_num_rounds)]) # lowest handicap differential to use
     # print (diff_to_use)
 
     # Finding Handicap Index
-    if int(diff_to_use) != 0:
-        print ('dfdsfdf')
+    if diff_to_use != 0:
+        # print (diff_to_use)
+
+        rounds_to_use_dict = list(event['Input'])[0:diff_to_use]
+        # print (rounds_to_use_dict)
+
+        rounds_to_use_total = sum(d['HandicapDifferential'] for d in rounds_to_use_dict)
+        # print (rounds_to_use_total)
+
+        rounds_to_use_average = rounds_to_use_total / diff_to_use
+        # print (rounds_to_use_average)
+
+        handicap_index = round(rounds_to_use_average * getConfigs.usga_handicap_index_constant, 2)
+        print (handicap_index)
 
     else: # handicap differentail is 0
-        print ('727227272727')
+        print ('COME BACK AND DO THIS ')
 
 
 
