@@ -18,6 +18,7 @@ provider:
     AIRTABLE_API_KEY: ${file(./secrets.env.yml):airTable.AIRTABLE_API_KEY}
     AIRTABLE_BASE_KEY: ${file(./secrets.env.yml):airTable.AIRTABLE_BASE_KEY}
     TBL_ROUNDS: ${file(./secrets.env.yml):airTable.TBL_ROUNDS}
+    TBL_HANDICAPDIFFERENTIAL: ${file(./secrets.env.yml):airTable.TBL_HANDICAPDIFFERENTIAL}
 
 plugins:
   - serverless-step-functions

@@ -13,7 +13,7 @@ def handler(event, context):
 
     # print ('We here')
 
-    # Getting upcoming market holidays
+    # Getting Rounds from AirTable
     url = getConfigs.airTable_baseURI + AIRTABLE_BASE_KEY + '/' + TBL_ROUNDS + '?' + getConfigs.airTable_urlFilter2
     # print (url)
     headers = {
