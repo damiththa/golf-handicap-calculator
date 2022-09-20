@@ -11,7 +11,7 @@ TBL_HANDICAPDIFFERENTIAL = os.environ['TBL_HANDICAPDIFFERENTIAL']
 
 def handler(event, context):
 
-    print ('we are in a lambda, triggered by step functions- woohoo')
+    # print ('we are in a lambda, triggered by step functions- woohoo')
     
     # event = json.dumps(event) # getting the object returned in json 
     # print (event)
@@ -72,7 +72,8 @@ def handler(event, context):
         # print (k['fields']['Lowest differentials to Use'])
         handicapDifferential_dict[k['fields']['No. Rounds Entered']] = k['fields']['Lowest differentials to Use']
 
-    print (handicapDifferential_dict)
+    # print (handicapDifferential_dict)
+    # Ex --> {'12': '4', '17': '7', '14': '5', '4': '0', '18': '8', '16': '6', '8': '2', '6': '1', '10': '3', '19': '9', '20': '10'}
 
     handicapDifferential_dict_keys = list(handicapDifferential_dict.keys())
     #Ex --> ['12', '17', '14', '4', '18', '16', '8', '6', '10', '19', '20']
@@ -80,12 +81,19 @@ def handler(event, context):
     # print (handicapDifferential_dict_keys)
     #Ex --> [12, 17, 14, 4, 18, 16, 8, 6, 10, 19, 20]
 
-    lowest_num_rounds = min([i for i in handicapDifferential_dict_keys if 7 <= i]) 
+    lowest_num_rounds = min([i for i in handicapDifferential_dict_keys if roundsEntered <= i]) 
     # See more --> https://stackoverflow.com/a/36275519/789782
     # print (lowest_num_rounds)
 
     diff_to_use = handicapDifferential_dict[str(lowest_num_rounds)] # lowest handicap differential to use
     # print (diff_to_use)
+
+    # Finding Handicap Index
+    if int(diff_to_use) != 0:
+        print ('dfdsfdf')
+
+    else: # handicap differentail is 0
+        print ('727227272727')
 
 
 
