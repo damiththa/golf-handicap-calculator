@@ -1,0 +1,59 @@
+service: golf-handicap-calculator
+
+frameworkVersion: '2'
+
+provider:
+  name: aws
+  runtime: python3.8
+  profile: Madushan
+  region: us-east-2
+  stage: dev # default stage, for multi stage deployment use ${opt:stage, 'dev'}
+  versionFunctions: false
+  tags:
+    environment: ${self:provider.stage}
+    project: golf
+
+  environment:
+    #airTable
+    AIRTABLE_API_KEY: ${file(./secrets.env.yml):airTable.AIRTABLE_API_KEY}
+    AIRTABLE_BASE_KEY: ${file(./secrets.env.yml):airTable.AIRTABLE_BASE_KEY}
+    TBL_ROUNDS: ${file(./secrets.env.yml):airTable.TBL_ROUNDS}
+    TBL_HANDICAPDIFFERENTIAL: ${file(./secrets.env.yml):airTable.TBL_HANDICAPDIFFERENTIAL}
+    TBL_HANDICAPTRACKER: ${file(./secrets.env.yml):airTable.TBL_HANDICAPTRACKER} 
+
+
+plugins:
+  - serverless-step-functions
+
+functions:
+  # getting all rounds from airtable
+  getRounds:
+    handler: lambdas/endpoints/getRounds.handler
+    description: Getting all entered rounds from airtable
+    layers:
+      - arn:aws:lambda:us-east-2:770693421928:layer:Klayers-p38-requests:6
+
+  # Calculating Handicap differential accourdingly
+  doHandicapDifferential:
+    handler: lambdas/endpoints/doHandicapDifferential.handler
+    description: Calculating Handicap differential accourdingly
+    layers:
+      - arn:aws:lambda:us-east-2:770693421928:layer:Klayers-p38-requests:6
+
+  # Posting handicap index back to airtable
+  postHandicapIndex:
+    handler: lambdas/endpoints/postHandicapIndex.handler
+    description: Posting handicap index back to airtable
+    layers:
+      - arn:aws:lambda:us-east-2:770693421928:layer:Klayers-p38-requests:6
+
+stepFunctions:
+  validate: true
+  stateMachines:
+    golfHandicapCalculatorStateMachine:
+      name: golfHandicapCalculatorStateMachine
+      events:
+        - http:
+              path: calculate-golf-handicap
+              method: POST
+      definition: ${file(./stepFunctions.yml)}
