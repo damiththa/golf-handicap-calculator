@@ -81,6 +81,7 @@ def addToHandicapTracker(handicapNow):
     # print (res.status_code)
     # print (res.content)
 
+    return
 
 def handler(event, context):
 
@@ -90,13 +91,13 @@ def handler(event, context):
 
     calculated_handicap = event['Input'] # Just now calculated handicap
 
-    if calculated_handicap == 'NA': # not enough rounds to calculate handicap
-        print('come back to this')
-
-    else:
+    # NOTEME: If 'calculated_handicap' is NA, means there are not enough Rounds recorded, therefore NO edtry will be added to the Handicap tracker
+    if calculated_handicap != 'NA': 
         recorded_handicap_dict = getLatestHandicapEntry() # getting lastest recorded handicap
 
         # Comparing handicaps (recorded and calculated just now) for changes 
         if recorded_handicap_dict['Handicap'] != calculated_handicap:
-            addToHandicapTracker(calculated_handicap)
+            addToHandicapTracker(calculated_handicap) # adding the new handicap to the table
+    
+    return
     
