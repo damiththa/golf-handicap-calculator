@@ -18,14 +18,13 @@ States:
       Payload:
         Input.$: "$.Payload" # Getting only the payload at the input
         # Input.$: "$" # NOTEME: Making it like this will send everything (i.e. Payload and metadata) 
-    # Next: tvShowRelatedShows
-    End: true
+    Next: postHandicapIndex
   
-  # tvShowRelatedShows:
-  #   Type: Task
-  #   Resource: arn:aws:states:::lambda:invoke
-  #   Parameters:
-  #     FunctionName: { "Fn::Join": [ ":", ["arn:aws:lambda:us-east-2", { "Ref": "AWS::AccountId" }, "function:${self:service}-${self:provider.stage}-relatedTVShows"]] }
-  #     Payload:
-  #       Input.$: "$.Payload" # Getting only the payload at the input
-  #   End: true
+  postHandicapIndex:
+    Type: Task
+    Resource: arn:aws:states:::lambda:invoke
+    Parameters:
+      FunctionName: { "Fn::Join": [ ":", ["arn:aws:lambda:us-east-2", { "Ref": "AWS::AccountId" }, "function:${self:service}-${self:provider.stage}-postHandicapIndex"]] }
+      Payload:
+        Input.$: "$.Payload" # Getting only the payload at the input
+    End: true

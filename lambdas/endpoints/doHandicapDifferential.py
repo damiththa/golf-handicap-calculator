@@ -22,7 +22,6 @@ def handler(event, context):
     roundsEntered = len(event['Input'])
 
     # Getting stored Handicap Differential from AirTable 
-    # Getting Rounds from AirTable
     url = getConfigs.airTable_baseURI + AIRTABLE_BASE_KEY + '/' + TBL_HANDICAPDIFFERENTIAL
     # print (url)
     headers = {
